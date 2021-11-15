@@ -6,13 +6,14 @@
 /*   By: chartema <chartema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/09 08:30:43 by chartema      #+#    #+#                 */
-/*   Updated: 2021/11/15 15:55:30 by chartema      ########   odam.nl         */
+/*   Updated: 2021/11/15 15:59:00 by chartema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 // Test comment
+// Test comment 2
 int	check_newline(char *storage)
 {
 	int	i;
