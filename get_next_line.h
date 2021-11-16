@@ -6,7 +6,7 @@
 /*   By: chartema <chartema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/09 09:22:14 by chartema      #+#    #+#                 */
-/*   Updated: 2021/11/15 09:34:13 by chartema      ########   odam.nl         */
+/*   Updated: 2021/11/16 15:34:50 by chartema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 # include <unistd.h>
 # include <fcntl.h>
 
-// Moet dit onderstaande stukje wel of niet?
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1000
-# endif
+char	*get_next_line(int fd);
+int		check_newline(char *storage);
+int		ft_strlen(char *s);
+char	*join_storage_and_buff(char *storage, char *buff);
 
 #endif
