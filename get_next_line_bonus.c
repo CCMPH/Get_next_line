@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   get_next_line.c                                    :+:    :+:            */
+/*   get_next_line_bonus.c                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: chartema <chartema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/11/09 08:30:43 by chartema      #+#    #+#                 */
-/*   Updated: 2021/11/19 10:04:26 by chartema      ########   odam.nl         */
+/*   Created: 2021/11/18 11:14:14 by chartema      #+#    #+#                 */
+/*   Updated: 2021/11/19 11:08:51 by chartema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*read_to_storage(int fd, char *storage)
 {
@@ -95,12 +95,12 @@ char	*get_new_storage(char *storage)
 char	*get_next_line(int fd)
 {
 	char			*rline;
-	static char		*storage;
+	static char		*storage[OPEN_MAX];
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)
 		return (NULL);
-	storage = read_to_storage(fd, storage);
-	rline = get_one_line(storage);
-	storage = get_new_storage(storage);
+	storage[fd] = read_to_storage(fd, storage[fd]);
+	rline = get_one_line(storage[fd]);
+	storage[fd] = get_new_storage(storage[fd]);
 	return (rline);
 }
