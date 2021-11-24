@@ -6,28 +6,34 @@
 /*   By: chartema <chartema@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/09 08:30:43 by chartema      #+#    #+#                 */
-/*   Updated: 2021/11/19 10:04:26 by chartema      ########   odam.nl         */
+/*   Updated: 2021/11/24 15:42:19 by chartema      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdlib.h>
+#include <unistd.h>
 
-char	*read_to_storage(int fd, char *storage)
+static char	*read_to_storage(int fd, char *storage)
 {
 	int		reader;
 	char	*buff;
 
+	if (!storage)
+		storage = ft_calloc(1, sizeof(char));
+	if (!storage)
+		return (NULL);
 	buff = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buff)
-		return (NULL);
+		return (free_line(storage));
 	reader = 1;
 	while (reader != 0 && !check_newline(storage))
 	{
 		reader = read(fd, buff, BUFFER_SIZE);
 		if (reader == -1)
-		{
-			free(buff);
-			return (NULL);
+		{	
+			free(storage);
+			return (free_line(buff));
 		}
 		buff[reader] = '\0';
 		storage = join_storage_and_buff(storage, buff);
@@ -36,7 +42,7 @@ char	*read_to_storage(int fd, char *storage)
 	return (storage);
 }
 
-char	*get_one_line(char *storage)
+static char	*get_one_line(char *storage)
 {
 	char	*rline;
 	int		i;
@@ -46,7 +52,7 @@ char	*get_one_line(char *storage)
 		return (NULL);
 	while (storage[i] != '\0' && storage[i] != '\n')
 		i++;
-	rline = (char *)malloc((i + 1) * sizeof(char));
+	rline = ft_calloc(i + 2, sizeof(char));
 	if (!rline)
 		return (NULL);
 	i = 0;
@@ -60,11 +66,10 @@ char	*get_one_line(char *storage)
 		rline[i] = storage[i];
 		i++;
 	}
-	rline[i] = '\0';
 	return (rline);
 }
 
-char	*get_new_storage(char *storage)
+static char	*get_new_storage(char *storage)
 {
 	int		i;
 	int		j;
@@ -75,19 +80,19 @@ char	*get_new_storage(char *storage)
 	i = 0;
 	while (storage[i] != '\0' && storage[i] != '\n')
 		i++;
-	if (!storage[i])
-	{
-		free(storage);
-		return (NULL);
-	}
-	str = (char *)malloc((ft_strlen(storage) - i + 1) * sizeof(char));
+	if (storage[i] == '\0')
+		return (free_line(storage));
+	str = ft_calloc((ft_strlen(storage) - i + 1), sizeof(char));
 	if (!str)
-		return (NULL);
+		return (free_line(storage));
 	j = 0;
 	i++;
 	while (storage[i] != '\0')
-		str[j++] = storage[i++];
-	str[j] = '\0';
+	{
+		str[j] = storage[i];
+		i++;
+		j++;
+	}
 	free(storage);
 	return (str);
 }
